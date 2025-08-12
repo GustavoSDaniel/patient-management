@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: patient-db # Dê um nome fixo ao contêiner
+    ports:
+      - "5435:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: usuario_dev
+      POSTGRES_PASSWORD: senha_dev
+      POSTGRES_DB: patient_db
+    volumes:
+      - db_data:/var/lib/postgresql/data # Mantenha os dados persistentes
+
+volumes:
+  db_data: # Declara o volume para persistir os dados

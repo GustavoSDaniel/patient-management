@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: patient-service  #
+  datasource:
+    url: jdbc:postgresql://localhost:5435/patient
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  sql:
+    init:
+      mode: always
+
+---
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5435/patient
+    username: usuario_dev
+    password: senha_dev
+
+---
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:postgresql://servidor-prod:5432/nome_do_banco_prod
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
