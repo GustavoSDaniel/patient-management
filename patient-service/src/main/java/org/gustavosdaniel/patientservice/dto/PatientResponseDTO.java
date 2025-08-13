@@ -26,6 +26,6 @@ public class PatientResponseDTO {
 
     private LocalDate birthDate;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime registrationDate ;
 
 }

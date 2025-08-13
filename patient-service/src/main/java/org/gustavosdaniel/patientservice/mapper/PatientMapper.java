@@ -19,7 +19,7 @@ public class PatientMapper {
                 .email(patient.getEmail())
                 .address(patient.getAddress())
                 .birthDate(patient.getBirthDate())
-                .createdAt(patient.getCreatedAt())
+                .registrationDate (patient.getregistrationDate ())
                 .build();
     }
 }

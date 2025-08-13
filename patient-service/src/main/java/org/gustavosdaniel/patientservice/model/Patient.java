@@ -39,8 +39,8 @@ public class Patient {
     private LocalDate birthDate;
 
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "registration_date ", updatable = false)
+    private LocalDateTime registrationDate ;
 
     @LastModifiedDate
     @Column(name = "update_at")

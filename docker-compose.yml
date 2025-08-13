@@ -6,13 +6,35 @@ services:
     container_name: patient-db # Dê um nome fixo ao contêiner
     ports:
       - "5435:5432"
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: usuario_dev
       POSTGRES_PASSWORD: senha_dev
       POSTGRES_DB: patient_db
+
+      POSTGRES_SHARED_PRELOAD_LIBRARIES: pg_stat_statements
+      POSTGRES_MAX_CONNECTIONS: 100
     volumes:
       - db_data:/var/lib/postgresql/data # Mantenha os dados persistentes
 
+
+  adminer:
+    image: adminer:4.8.1
+    container_name: patient-adminer
+    restart: unless-stopped
+    ports:
+      - "8090:8080"
+    networks:
+      - patient-network
+    profiles:
+      - dev  # Só roda no perfil dev
+
+
 volumes:
   db_data: # Declara o volume para persistir os dados
+
+
+networks:
+  patient-network:
+    driver: bridge
+

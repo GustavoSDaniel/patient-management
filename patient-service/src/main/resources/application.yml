@@ -1,13 +1,17 @@
 spring:
   application:
     name: patient-service  #
-  datasource:
-    url: jdbc:postgresql://localhost:5435/patient
-    username: user
-    password: password
+  ddatasource:
+    url: jdbc:postgresql://localhost:5435/patient_db
+    username: usuario_dev
+    password: senha_dev
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      leak-detection-threshold: 60000
 
   jpa:
     hibernate:
@@ -20,7 +24,7 @@ spring:
 
   sql:
     init:
-      mode: always
+      mode: embedded
 
 ---
 spring:
