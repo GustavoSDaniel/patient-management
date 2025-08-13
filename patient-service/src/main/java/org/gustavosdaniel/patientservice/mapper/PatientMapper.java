@@ -7,7 +7,7 @@ import org.gustavosdaniel.patientservice.model.Patient;
 
 public class PatientMapper {
 
-    public PatientResponseDTO toPatientResponseDTO(Patient patient) {
+    public static PatientResponseDTO toPatientResponseDTO(Patient patient) {
 
         if (patient == null) {
             return null;
