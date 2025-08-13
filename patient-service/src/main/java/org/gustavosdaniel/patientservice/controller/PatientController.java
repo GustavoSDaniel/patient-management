@@ -1,18 +1,16 @@
 package org.gustavosdaniel.patientservice.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.gustavosdaniel.patientservice.dto.PatientResponseDTO;
-import org.gustavosdaniel.patientservice.mapper.PatientMapper;
-import org.gustavosdaniel.patientservice.model.Patient;
+import org.gustavosdaniel.patientservice.dto.RequestPatientDTO;
+
 import org.gustavosdaniel.patientservice.service.PatientService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/patients")
@@ -20,6 +18,15 @@ import java.util.UUID;
 public class PatientController {
 
     private final PatientService patientService;
+
+    @PostMapping
+    public ResponseEntity<PatientResponseDTO> createPatient(
+            @Valid @RequestBody RequestPatientDTO requestPatientDTO
+    ) {
+        PatientResponseDTO patientResponseDTO = patientService.createPatient(requestPatientDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(patientResponseDTO);
+
+    }
 
     @GetMapping
     public ResponseEntity<List<PatientResponseDTO>> getAllPatients() {

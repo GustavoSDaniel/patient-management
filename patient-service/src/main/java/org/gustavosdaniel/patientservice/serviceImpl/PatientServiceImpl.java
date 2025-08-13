@@ -9,7 +9,6 @@ import org.gustavosdaniel.patientservice.repository.PatientRepository;
 import org.gustavosdaniel.patientservice.service.PatientService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +17,7 @@ import java.util.stream.Collectors;
 public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
+    private final PatientMapper patientMapper;
 
 
     @Override
@@ -26,12 +26,14 @@ public class PatientServiceImpl implements PatientService {
         List<Patient> patients = patientRepository.findAll();
 
         return patients.stream()
-                .map(PatientMapper::toPatientResponseDTO).collect(Collectors.toList());
+                .map(patientMapper::toPatientResponseDTO).collect(Collectors.toList());
 
     }
 
     @Override
     public PatientResponseDTO createPatient(RequestPatientDTO requestPatientDTO) {
-        return null;
+        Patient patient = patientRepository.save(patientMapper.toPatient(requestPatientDTO));
+
+        return patientMapper.toPatientResponseDTO(patient);
     }
 }
