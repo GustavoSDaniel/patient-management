@@ -43,7 +43,7 @@ public class Patient {
     private LocalDateTime registrationDate ;
 
     @LastModifiedDate
-    @Column(name = "update_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @Override
@@ -51,7 +51,7 @@ public class Patient {
         if (o == null || getClass() != o.getClass()) return false;
 
         Patient patient = (Patient) o;
-        return Objects.equals(id, patient.id) && Objects.equals(name, patient.name) && Objects.equals(email, patient.email) && Objects.equals(address, patient.address) && Objects.equals(birthDate, patient.birthDate) && Objects.equals(createdAt, patient.createdAt) && Objects.equals(updatedAt, patient.updatedAt);
+        return Objects.equals(id, patient.id) && Objects.equals(name, patient.name) && Objects.equals(email, patient.email) && Objects.equals(address, patient.address) && Objects.equals(birthDate, patient.birthDate) && Objects.equals(registrationDate, patient.registrationDate) && Objects.equals(updatedAt, patient.updatedAt);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class Patient {
         result = 31 * result + Objects.hashCode(email);
         result = 31 * result + Objects.hashCode(address);
         result = 31 * result + Objects.hashCode(birthDate);
-        result = 31 * result + Objects.hashCode(createdAt);
+        result = 31 * result + Objects.hashCode(registrationDate);
         result = 31 * result + Objects.hashCode(updatedAt);
         return result;
     }

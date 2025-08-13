@@ -2,6 +2,7 @@ package org.gustavosdaniel.patientservice.serviceImpl;
 
 import lombok.RequiredArgsConstructor;
 import org.gustavosdaniel.patientservice.dto.PatientResponseDTO;
+import org.gustavosdaniel.patientservice.dto.RequestPatientDTO;
 import org.gustavosdaniel.patientservice.mapper.PatientMapper;
 import org.gustavosdaniel.patientservice.model.Patient;
 import org.gustavosdaniel.patientservice.repository.PatientRepository;
@@ -27,5 +28,10 @@ public class PatientServiceImpl implements PatientService {
         return patients.stream()
                 .map(PatientMapper::toPatientResponseDTO).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public PatientResponseDTO createPatient(RequestPatientDTO requestPatientDTO) {
+        return null;
     }
 }
