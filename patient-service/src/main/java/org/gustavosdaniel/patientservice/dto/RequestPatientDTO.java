@@ -21,12 +21,10 @@ public class RequestPatientDTO {
 
     @Email(message = "Formato de email inválido")
     @NotBlank(message = "O campo email é obrigatório")
-    @Pattern(regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$",
-            message = "Formato de email inválido")
     private String email;
 
     @NotBlank(message = "O campo endereço é obrigatório ")
-    @Pattern(regexp = "^[\\p{L}0-9\\s.,-]+(?:\\s[\\p{L}0-9\\s.,-]+)*$",
+    @Pattern(regexp = "^[a-zA-Z0-9\\s.,-]+$",
             message = "Formato de endereço inválido")
     private String address;
 
