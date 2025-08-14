@@ -1,23 +1,23 @@
-package org.gustavosdaniel.patientservice.controller;
+package org.gustavosdaniel.patientservice.patient;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.gustavosdaniel.patientservice.dto.PatientResponseDTO;
-import org.gustavosdaniel.patientservice.dto.RequestPatientDTO;
 
-import org.gustavosdaniel.patientservice.service.PatientService;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/patients")
 @RequiredArgsConstructor
 public class PatientController {
 
-    private final PatientService patientService;
+    private final PatientMapper.PatientService patientService;
 
     @PostMapping
     public ResponseEntity<PatientResponseDTO> createPatient(
@@ -38,5 +38,8 @@ public class PatientController {
     }
 
 
+    @Repository
+    public static interface PatientRepository extends JpaRepository<Patient, UUID> {
 
+    }
 }

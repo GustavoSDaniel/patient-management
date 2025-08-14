@@ -1,4 +1,4 @@
-package org.gustavosdaniel.patientservice.exception;
+package org.gustavosdaniel.patientservice.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
             fieldErros.put(error.getField(), error.getDefaultMessage());
         });
 
-        errorDTO.setFildErrors(fieldErros);
+        errorDTO.setFieldErrors(fieldErros);
 
         return ResponseEntity.badRequest().body(errorDTO);
     }

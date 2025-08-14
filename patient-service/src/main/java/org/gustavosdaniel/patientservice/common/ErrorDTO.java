@@ -1,4 +1,4 @@
-package org.gustavosdaniel.patientservice.exception;
+package org.gustavosdaniel.patientservice.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -20,5 +20,5 @@ public class ErrorDTO {
     private LocalDateTime timestamp;
 
     @JsonInclude(JsonInclude.Include.NON_NULL) // remove campos null do JSON
-    private Map<String, String> fildErrors;
+    private Map<String, String> fieldErrors;
 }

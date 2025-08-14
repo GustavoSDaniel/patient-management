@@ -1,4 +1,4 @@
-package org.gustavosdaniel.patientservice.dto;
+package org.gustavosdaniel.patientservice.patient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -30,6 +29,7 @@ public class RequestPatientDTO {
 
     @NotNull(message = "O campo data de nascimento é obrigatório")
     @Past(message = "A data de nascimento deve ser no passado")
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
 
 }

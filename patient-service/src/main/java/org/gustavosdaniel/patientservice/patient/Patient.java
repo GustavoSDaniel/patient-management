@@ -1,9 +1,9 @@
-package org.gustavosdaniel.patientservice.model;
+package org.gustavosdaniel.patientservice.patient;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.gustavosdaniel.patientservice.address.Address;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
@@ -30,8 +30,8 @@ public class Patient {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
-    private String address;
+    @OneToOne(mappedBy = "patients")
+    private Address address;
 
     @Column(nullable = false, name = "birth_date")
     private LocalDate birthDate;
