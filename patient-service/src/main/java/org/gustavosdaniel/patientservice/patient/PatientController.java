@@ -17,7 +17,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PatientController {
 
-    private final PatientMapper.PatientService patientService;
+    private final PatientMapper  patientMapper;
+
+   private final PatientService patientService;
 
     @PostMapping
     public ResponseEntity<PatientResponseDTO> createPatient(

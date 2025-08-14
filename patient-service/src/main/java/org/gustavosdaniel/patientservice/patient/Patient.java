@@ -30,7 +30,7 @@ public class Patient {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @OneToOne(mappedBy = "patients")
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
     private Address address;
 
     @Column(nullable = false, name = "birth_date")
