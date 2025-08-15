@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.gustavosdaniel.patientservice.patient.RequestPatientDTO;
 
 @Data
 @AllArgsConstructor

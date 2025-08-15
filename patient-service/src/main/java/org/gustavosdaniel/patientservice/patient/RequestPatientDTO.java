@@ -24,6 +24,7 @@ public class RequestPatientDTO {
     @NotBlank(message = "O campo email é obrigatório")
     private String email;
 
+    @NotNull(message = "O campo de endereço é obrigatório")
     @Valid
     private AddressRequestDTO addressRequestDTO;
 
