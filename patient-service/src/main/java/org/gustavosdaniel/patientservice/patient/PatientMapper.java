@@ -2,9 +2,11 @@ package org.gustavosdaniel.patientservice.patient;
 
 
 import org.gustavosdaniel.patientservice.address.AddressMapper;
+import org.gustavosdaniel.patientservice.commun.FusoHorarioBr;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 
 @Component
@@ -15,6 +17,7 @@ public class PatientMapper {
     public PatientMapper(AddressMapper addressMapper) {
         this.addressMapper = addressMapper;
     }
+
 
     public  PatientResponseDTO toPatientResponseDTO(Patient patient) {
 
@@ -37,12 +40,13 @@ public class PatientMapper {
             return null;
         }
 
+
         return Patient.builder()
                 .name(requestPatientDTO.getName())
                 .email(requestPatientDTO.getEmail())
                 .address(addressMapper.toAddress(requestPatientDTO.getAddressRequestDTO()))
                 .birthDate(requestPatientDTO.getBirthDate())
-                .registrationDate(LocalDateTime.now())
+                .registrationDate(FusoHorarioBr.nowInBrasil().toLocalDateTime())
                 .build();
         }
 

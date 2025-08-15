@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,8 +27,23 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientResponseDTO createPatient(RequestPatientDTO requestPatientDTO) {
-        Patient patient = patientRepository.save(patientMapper.toPatient(requestPatientDTO));
 
-        return patientMapper.toPatientResponseDTO(patient);
+        if (patientRepository.existsByEmail(requestPatientDTO.getEmail())) {
+            throw new EmailAlreadyExistsException();
+        }
+
+        Patient newPatient = patientRepository.save(patientMapper.toPatient(requestPatientDTO));
+
+
+        return patientMapper.toPatientResponseDTO(newPatient);
+    }
+
+    @Override
+    public Patient updatePatient(UUID id, RequestPatientDTO requestPatientDTO) {
+
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new PatientNotFoundException());
+
+
     }
 }

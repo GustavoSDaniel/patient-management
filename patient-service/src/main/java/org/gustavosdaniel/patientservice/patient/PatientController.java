@@ -39,9 +39,4 @@ public class PatientController {
 
     }
 
-
-    @Repository
-    public static interface PatientRepository extends JpaRepository<Patient, UUID> {
-
-    }
 }

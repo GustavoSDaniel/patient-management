@@ -1,4 +1,4 @@
-package org.gustavosdaniel.patientservice.common;
+package org.gustavosdaniel.patientservice.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
