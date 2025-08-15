@@ -1,10 +1,11 @@
-package org.gustavosdaniel.patientservice.dto;
+package org.gustavosdaniel.patientservice.patient;
 
-import jakarta.persistence.Column;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.gustavosdaniel.patientservice.address.AddressResponseDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,8 +23,9 @@ public class PatientResponseDTO {
 
     private String email;
 
-    private String address;
+    private AddressResponseDTO addressResponseDTO;
 
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
 
     private LocalDateTime registrationDate ;

@@ -1,12 +1,9 @@
-package org.gustavosdaniel.patientservice.model;
+package org.gustavosdaniel.patientservice.patient;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.gustavosdaniel.patientservice.address.Address;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
@@ -19,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "patients")
 public class Patient {
 
@@ -32,8 +30,8 @@ public class Patient {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
-    private String address;
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
+    private Address address;
 
     @Column(nullable = false, name = "birth_date")
     private LocalDate birthDate;

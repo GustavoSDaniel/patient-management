@@ -1,7 +1,4 @@
-package org.gustavosdaniel.patientservice.service;
-
-import org.gustavosdaniel.patientservice.dto.PatientResponseDTO;
-import org.gustavosdaniel.patientservice.dto.RequestPatientDTO;
+package org.gustavosdaniel.patientservice.patient;
 
 import java.util.List;
 
