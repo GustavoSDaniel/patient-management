@@ -1,12 +1,13 @@
-### Creates a new patient entity
+### Update an existing patient entity
 
-POST http://localhost:8080/api/v1/patients
+PUT http://localhost:8080/api/v1/patients/713fd9a6-b1bf-44c7-9c09-01feeab190ee
 
 Content-Type: application/json
 
+
 {
   "name": "João da Silva",
-  "email": "joao7.silva@email.com",
+  "email": "joao8.silva@email.com",
   "birthDate": "20-05-1988",
   "addressRequestDTO": {
     "street": "Avenida Sao paulo",

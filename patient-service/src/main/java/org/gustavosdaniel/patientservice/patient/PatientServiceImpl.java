@@ -1,6 +1,7 @@
 package org.gustavosdaniel.patientservice.patient;
 
 import lombok.RequiredArgsConstructor;
+import org.gustavosdaniel.patientservice.address.Address;
 import org.gustavosdaniel.patientservice.address.AddressMapper;
 import org.gustavosdaniel.patientservice.commun.FusoHorarioBr;
 import org.springframework.stereotype.Service;
@@ -52,9 +53,11 @@ public class PatientServiceImpl implements PatientService {
             throw new EmailAlreadyExistsException();
         }
 
+        Address updateAddress = addressMapper.toAddress(patientUpdateRequestDTO.getAddressRequestDTO());
+
         patient.setName(patientUpdateRequestDTO.getName());
         patient.setEmail(patientUpdateRequestDTO.getEmail());
-        patient.setAddress(addressMapper.toAddress(patientUpdateRequestDTO.getAddressRequestDTO()));
+        patient.setAddress(updateAddress);
 
         Patient updatedPatient = patientRepository.save(patient);
 
