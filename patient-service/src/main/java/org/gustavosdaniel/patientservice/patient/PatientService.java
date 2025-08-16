@@ -9,5 +9,5 @@ public interface PatientService {
 
     PatientResponseDTO createPatient(RequestPatientDTO requestPatientDTO);
 
-    Patient updatePatient(UUID id, RequestPatientDTO requestPatientDTO);
+    PatientUpdateResponseDTO updatePatient(UUID id, PatientUpdateRequestDTO patientUpdateRequestDTO);
 }

@@ -50,6 +50,34 @@ public class PatientMapper {
                 .build();
         }
 
+        public  Patient toPatientUpdate(PatientUpdateRequestDTO patientUpdateRequestDTO) {
+
+            if (patientUpdateRequestDTO == null) {
+                return null;
+            }
+
+            return Patient.builder()
+                    .name(patientUpdateRequestDTO.getName())
+                    .email(patientUpdateRequestDTO.getEmail())
+                    .address(addressMapper.toAddress(patientUpdateRequestDTO.getAddressRequestDTO()))
+                    .build();
+        }
+
+
+    public  PatientUpdateResponseDTO patientUpdateResponseDTO(Patient patient) {
+
+        if (patient == null) {
+            return null;
+        }
+
+        return PatientUpdateResponseDTO.builder()
+                .id(patient.getId())
+                .name(patient.getName())
+                .email(patient.getEmail())
+                .addressResponseDTO(addressMapper.toAddressResponseDTO(patient.getAddress()))
+                .updatedAt(FusoHorarioBr.nowInBrasil().toLocalDateTime())
+                .build();
+    }
 
 
 

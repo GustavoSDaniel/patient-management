@@ -3,10 +3,8 @@ package org.gustavosdaniel.patientservice.patient;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +15,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PatientController {
 
-    private final PatientMapper  patientMapper;
 
    private final PatientService patientService;
 
@@ -36,6 +33,18 @@ public class PatientController {
         List<PatientResponseDTO> patients = patientService.getPatients();
 
         return ResponseEntity.ok(patients);
+
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PatientUpdateResponseDTO> updatePatient(
+            @PathVariable UUID id,
+            @Valid @RequestBody PatientUpdateRequestDTO patientUpdateRequestDTO
+
+    ) {
+        PatientUpdateResponseDTO patientUpdateResponseDTO = patientService.updatePatient(id, patientUpdateRequestDTO);
+
+        return ResponseEntity.ok(patientUpdateResponseDTO);
 
     }
 
