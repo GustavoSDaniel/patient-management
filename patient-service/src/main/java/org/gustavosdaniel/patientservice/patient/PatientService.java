@@ -10,4 +10,6 @@ public interface PatientService {
     PatientResponseDTO createPatient(RequestPatientDTO requestPatientDTO);
 
     PatientUpdateResponseDTO updatePatient(UUID id, PatientUpdateRequestDTO patientUpdateRequestDTO);
+
+    void deletePatient(UUID id);
 }

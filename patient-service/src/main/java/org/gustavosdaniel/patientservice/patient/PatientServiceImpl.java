@@ -3,10 +3,8 @@ package org.gustavosdaniel.patientservice.patient;
 import lombok.RequiredArgsConstructor;
 import org.gustavosdaniel.patientservice.address.Address;
 import org.gustavosdaniel.patientservice.address.AddressMapper;
-import org.gustavosdaniel.patientservice.commun.FusoHorarioBr;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -63,5 +61,13 @@ public class PatientServiceImpl implements PatientService {
 
         return patientMapper.patientUpdateResponseDTO(updatedPatient);
 
+    }
+
+    @Override
+    public void deletePatient(UUID id) {
+
+        Patient patient = patientRepository.findById(id).orElseThrow(PatientNotFoundException::new);
+
+        patientRepository.delete(patient);
     }
 }
