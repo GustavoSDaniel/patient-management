@@ -1,5 +1,6 @@
 package org.gustavosdaniel.patientservice.patient;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,7 @@ public class PatientController {
    private final PatientService patientService;
 
     @PostMapping
+    @Operation(summary = "Create a new Patients")
     public ResponseEntity<PatientResponseDTO> createPatient(
             @Valid @RequestBody RequestPatientDTO requestPatientDTO
     ) {
@@ -28,6 +30,7 @@ public class PatientController {
     }
 
     @GetMapping
+    @Operation(summary = "Get All Patients")
     public ResponseEntity<List<PatientResponseDTO>> getAllPatients() {
 
         List<PatientResponseDTO> patients = patientService.getPatients();
@@ -37,6 +40,7 @@ public class PatientController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update a Patient")
     public ResponseEntity<PatientUpdateResponseDTO> updatePatient(
             @PathVariable UUID id,
             @Valid @RequestBody PatientUpdateRequestDTO patientUpdateRequestDTO
@@ -49,7 +53,7 @@ public class PatientController {
     }
 
     @DeleteMapping("/{id}")
-
+    @Operation(summary = "Delete a Patient")
     public ResponseEntity<Void> deletePatient(@PathVariable UUID id) {
 
         patientService.deletePatient(id);

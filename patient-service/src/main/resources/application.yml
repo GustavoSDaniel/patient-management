@@ -46,3 +46,8 @@ spring:
     url: jdbc:postgresql://servidor-prod:5432/nome_do_banco_prod
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+
+# http://localhost:8080/swagger-ui.html
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
