@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: billing-service
+  rsocket:
+    server:
+      port: 8083  # RSocket usará a porta 8083 (TCP padrão)
+
+grpc:
+  server:
+    port: 9001 # gRPC usará a porta 9001
