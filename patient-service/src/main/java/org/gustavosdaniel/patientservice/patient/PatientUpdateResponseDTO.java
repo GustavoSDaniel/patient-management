@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PatientResponseDTO {
+public class PatientUpdateResponseDTO {
 
     private UUID id;
 
@@ -25,11 +25,8 @@ public class PatientResponseDTO {
 
     private AddressResponseDTO addressResponseDTO;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate birthDate;
-
     @JsonFormat(pattern = "dd-MM-yyyy'T'HH:mm:ss.SSS'Z'")
-    private LocalDateTime registrationDate ;
+    private LocalDateTime updatedAt;
 
 
 
