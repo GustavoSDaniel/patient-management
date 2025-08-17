@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+		<relativePath/> </parent>
 	<groupId>com.gustavosdaniel</groupId>
 	<artifactId>billing-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -41,7 +40,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!--GRPC -->
 		<dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-netty-shaded</artifactId>
@@ -57,8 +55,7 @@
 			<artifactId>grpc-stub</artifactId>
 			<version>1.69.0</version>
 		</dependency>
-		<dependency> <!-- necessary for Java 9+ -->
-			<groupId>org.apache.tomcat</groupId>
+		<dependency> <groupId>org.apache.tomcat</groupId>
 			<artifactId>annotations-api</artifactId>
 			<version>6.0.53</version>
 			<scope>provided</scope>
@@ -79,7 +76,6 @@
 
 	<build>
 		<extensions>
-			<!-- Ensure OS compatibility for protoc -->
 			<extension>
 				<groupId>kr.motd.maven</groupId>
 				<artifactId>os-maven-plugin</artifactId>
@@ -87,13 +83,14 @@
 			</extension>
 		</extensions>
 		<plugins>
-			<!-- Spring boot / maven  -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.gustavosdaniel.billingservice.BillingServiceApplication</mainClass>
+				</configuration>
 			</plugin>
 
-			<!-- PROTO -->
 			<plugin>
 				<groupId>org.xolstice.maven.plugins</groupId>
 				<artifactId>protobuf-maven-plugin</artifactId>
@@ -114,6 +111,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>
