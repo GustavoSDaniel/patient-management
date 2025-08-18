@@ -27,6 +27,9 @@ spring:
     init:
       mode: embedded
 
+server:
+  port: 8080
+
 ---
 spring:
   config:
@@ -51,3 +54,11 @@ spring:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
+
+grpc:
+  client:
+    billing-service:
+      address: static://billing-service:9091
+      negotiationType: PLAINTEXT
+
+

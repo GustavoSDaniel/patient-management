@@ -16,6 +16,8 @@ services:
       POSTGRES_MAX_CONNECTIONS: 100
     volumes:
       - db_data:/var/lib/postgresql/data # Mantenha os dados persistentes
+    networks:
+      - patient-network
 
 
   adminer:
@@ -28,6 +30,28 @@ services:
       - patient-network
     profiles:
       - dev  # Só roda no perfil dev
+
+
+  billing-service:
+    build: ./billing-service   # caminho para o projeto do billing
+    container_name: billing-service
+    ports:
+      - "8082:8081" # para expor a porta do servidor web
+      - "9092:9091"
+    networks:
+      - patient-network
+
+  patient-service:
+    build: ./patient-service   # caminho para o projeto do patient
+    container_name: patient-service
+    ports:
+      - "8085:8080"
+      - "9095:9090"
+    depends_on:
+      - db
+      - billing-service
+    networks:
+      - patient-network
 
 
 volumes:
