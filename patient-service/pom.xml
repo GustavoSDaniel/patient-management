@@ -118,12 +118,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.gustavosdaniel</groupId>
-            <artifactId>billing-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+
     </dependencies>
 
     <build>
@@ -141,7 +136,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.gustavosdaniel.patientservice.PatientServiceApplication</mainClass>
+                    <mainClass>org.gustavosdaniel.patientservice.PatientServiceApplication</mainClass>
                 </configuration>
             </plugin>
 

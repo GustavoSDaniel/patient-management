@@ -3,16 +3,12 @@ spring:
     name: patient-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5435/patient_db
-    username: usuario_dev
-    password: senha_dev
+    # URL do banco de dados com valores padrão
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5435}/${DB_NAME:patient_db}
+    username: ${DB_USERNAME:usuario_dev}
+    password: ${DB_PASSWORD:senha_dev}
     driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 5
-      idle-timeout: 300000
-      connection-timeout: 20000
-      leak-detection-threshold: 60000
+    # ... outras configurações de datasource
 
   jpa:
     hibernate:
@@ -27,38 +23,16 @@ spring:
     init:
       mode: embedded
 
+  # Configuração gRPC movida para a seção padrão com valores padrão
+  grpc:
+    client:
+      billing-service:
+        # Se a variável de ambiente não existir, usa localhost
+        address: static://${BILLING_SERVICE_HOST:localhost}:${BILLING_SERVICE_PORT:9092}
+        negotiationType: PLAINTEXT
+
 server:
   port: 8080
 
----
-spring:
-  config:
-    activate:
-      on-profile: dev
-  datasource:
-    url: jdbc:postgresql://localhost:5435/patient
-    username: usuario_dev
-    password: senha_dev
-
----
-spring:
-  config:
-    activate:
-      on-profile: prod
-  datasource:
-    url: jdbc:postgresql://servidor-prod:5432/nome_do_banco_prod
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-
-# http://localhost:8080/swagger-ui.html
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-
-grpc:
-  client:
-    billing-service:
-      address: static://billing-service:9091
-      negotiationType: PLAINTEXT
 
 
