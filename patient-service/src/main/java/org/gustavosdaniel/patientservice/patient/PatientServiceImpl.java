@@ -3,6 +3,7 @@ package org.gustavosdaniel.patientservice.patient;
 import lombok.RequiredArgsConstructor;
 import org.gustavosdaniel.patientservice.address.Address;
 import org.gustavosdaniel.patientservice.address.AddressMapper;
+import org.gustavosdaniel.patientservice.grpc.BillingServiceGrpcClient;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
     private final AddressMapper addressMapper;
+    private final BillingServiceGrpcClient billingServiceGrpcClient;
 
 
     @Override
@@ -37,6 +39,10 @@ public class PatientServiceImpl implements PatientService {
 
         Patient newPatient = patientRepository.save(patientMapper.toPatient(requestPatientDTO));
 
+        billingServiceGrpcClient.createBillingAccount(
+                newPatient.getId().toString(),
+                newPatient.getName(),
+                newPatient.getEmail());
 
         return patientMapper.toPatientResponseDTO(newPatient);
     }

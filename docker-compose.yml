@@ -3,7 +3,7 @@ version: '3.8'
 services:
   db:
     image: postgres:16-alpine
-    container_name: patient-db # Dê um nome fixo ao contêiner
+    container_name: patient-db
     ports:
       - "5435:5432"
     restart: unless-stopped
@@ -11,12 +11,10 @@ services:
       POSTGRES_USER: usuario_dev
       POSTGRES_PASSWORD: senha_dev
       POSTGRES_DB: patient_db
-
-      POSTGRES_SHARED_PRELOAD_LIBRARIES: pg_stat_statements
-      POSTGRES_MAX_CONNECTIONS: 100
     volumes:
-      - db_data:/var/lib/postgresql/data # Mantenha os dados persistentes
-
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - patient-network
 
   adminer:
     image: adminer:4.8.1
@@ -27,14 +25,43 @@ services:
     networks:
       - patient-network
     profiles:
-      - dev  # Só roda no perfil dev
+      - dev
 
+  billing-service:
+    build: ./billing-service
+    container_name: billing-service
+    ports:
+      - "8082:8081"
+      - "9092:9091"
+    networks:
+      - patient-network
+
+  patient-service:
+    build: ./patient-service
+    container_name: patient-service
+    ports:
+      - "8085:8080"
+      - "9095:9090"
+    depends_on:
+      - db
+      - billing-service
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_USERNAME: usuario_dev
+      DB_PASSWORD: senha_dev
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: patient_db
+      BILLING_SERVICE_HOST: billing-service
+      BILLING_SERVICE_PORT: 9091
+    networks:
+      - patient-network
 
 volumes:
-  db_data: # Declara o volume para persistir os dados
-
+  db_data:
 
 networks:
   patient-network:
     driver: bridge
+
 

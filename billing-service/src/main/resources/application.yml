@@ -3,8 +3,11 @@ spring:
     name: billing-service
   rsocket:
     server:
-      port: 8083  # RSocket usará a porta 8083 (TCP padrão)
+      port: 6565  # Porta RSocket (TCP)
+
+server:
+  port: 8081  # Porta HTTP principal (para REST/Actuator)
 
 grpc:
   server:
-    port: 9001 # gRPC usará a porta 9001
+    port: 9091  # Porta gRPC
