@@ -1,14 +1,20 @@
+# Configurações globais (aplicadas em todos os perfis, a menos que sobrescritas)
 spring:
   application:
     name: patient-service
 
+  # Configuração do banco de dados com valores padrão para execução local
   datasource:
-    # URL do banco de dados com valores padrão
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5435}/${DB_NAME:patient_db}
     username: ${DB_USERNAME:usuario_dev}
     password: ${DB_PASSWORD:senha_dev}
     driver-class-name: org.postgresql.Driver
-    # ... outras configurações de datasource
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      leak-detection-threshold: 60000
 
   jpa:
     hibernate:
@@ -23,13 +29,23 @@ spring:
     init:
       mode: embedded
 
-  # Configuração gRPC movida para a seção padrão com valores padrão
+  # Configuração do cliente gRPC com valores padrão para execução local
   grpc:
     client:
       billing-service:
-        # Se a variável de ambiente não existir, usa localhost
         address: static://${BILLING_SERVICE_HOST:localhost}:${BILLING_SERVICE_PORT:9092}
         negotiationType: PLAINTEXT
+
+  # Nova seção de configuração para o Kafka
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9099}
+    properties:
+      security:
+        protocol: PLAINTEXT
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+
 
 server:
   port: 8080

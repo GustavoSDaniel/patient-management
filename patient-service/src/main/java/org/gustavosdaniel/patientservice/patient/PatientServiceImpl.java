@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.gustavosdaniel.patientservice.address.Address;
 import org.gustavosdaniel.patientservice.address.AddressMapper;
 import org.gustavosdaniel.patientservice.grpc.BillingServiceGrpcClient;
+import org.gustavosdaniel.patientservice.kafka.KafkaProducer;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class PatientServiceImpl implements PatientService {
     private final PatientMapper patientMapper;
     private final AddressMapper addressMapper;
     private final BillingServiceGrpcClient billingServiceGrpcClient;
+    private final KafkaProducer kafkaProducer;
 
 
     @Override
@@ -43,6 +45,8 @@ public class PatientServiceImpl implements PatientService {
                 newPatient.getId().toString(),
                 newPatient.getName(),
                 newPatient.getEmail());
+
+        kafkaProducer.sendEvent(newPatient);
 
         return patientMapper.toPatientResponseDTO(newPatient);
     }
