@@ -36,33 +36,43 @@ services:
     networks:
       - patient-network
 
-  # Novo serviço: Zookeeper (necessário para o Kafka)
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.6.0
+    image: docker.io/bitnami/zookeeper:3.9
     container_name: zookeeper
     restart: unless-stopped
+    ports:
+      - "2181:2181"
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
+      # Habilita o login anônimo para facilitar o desenvolvimento
+      ALLOW_ANONYMOUS_LOGIN: "yes"
     networks:
       - patient-network
 
-  # Novo serviço: Kafka
   kafka:
-    image: confluentinc/cp-kafka:7.6.0
+    image: docker.io/bitnami/kafka:3.6
     container_name: kafka
     restart: unless-stopped
     ports:
-      - "9099:9092"
+      - "9099:9099" # Porta para sua aplicação no localhost
+      - "9099:9099" # Porta para comunicação interna (e ferramentas)
     depends_on:
       - zookeeper
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9099
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      # Conexão com o Zookeeper
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+
+      # --- CONFIGURAÇÃO DOS LISTENERS ---
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+
+      #  Define os LISTENERS usando os NOMES definidos acima
+      KAFKA_CFG_LISTENERS: INTERNAL://:9092,EXTERNAL://:9099
+
+      # Define os endereços ANUNCIADOS usando os NOMES
+      KAFKA_CFG_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:9099
+
+      # Define o listener para comunicação interna entre os brokers
+      KAFKA_CFG_INTER_BROKER_LISTENER_NAME: INTERNAL
+
     networks:
       - patient-network
 
@@ -77,16 +87,8 @@ services:
       - billing-service
       - kafka  # Adicionado o Kafka aqui
     environment:
-      SPRING_PROFILES_ACTIVE: dev
-      DB_USERNAME: usuario_dev
-      DB_PASSWORD: senha_dev
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: patient_db
-      BILLING_SERVICE_HOST: billing-service
-      BILLING_SERVICE_PORT: 9091
-      # Adicionadas variáveis de ambiente para o Kafka
-      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      # O Spring lerá o 'application-docker.yml'
+      SPRING_PROFILES_ACTIVE: docker
     networks:
       - patient-network
 
