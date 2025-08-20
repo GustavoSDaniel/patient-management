@@ -92,6 +92,20 @@ services:
     networks:
       - patient-network
 
+  analytics-service:
+    build:
+      context: .
+      dockerfile: analytics-service/Dockerfile
+    container_name: analytics-service
+    ports:
+      - "8091:8091"
+    depends_on:
+      - kafka
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - patient-network
+
 volumes:
   db_data:
 
