@@ -30,6 +30,7 @@ public class Patient {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @JoinColumn(name = "patient_id")
     @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
     private Address address;
 

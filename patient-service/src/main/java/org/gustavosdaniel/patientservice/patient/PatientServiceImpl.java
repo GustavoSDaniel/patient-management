@@ -39,7 +39,14 @@ public class PatientServiceImpl implements PatientService {
             throw new EmailAlreadyExistsException();
         }
 
-        Patient newPatient = patientRepository.save(patientMapper.toPatient(requestPatientDTO));
+        // estabelecer relacionamento
+        Patient newPatient = patientMapper.toPatient(requestPatientDTO);
+        Address newAddress = addressMapper.toAddress(requestPatientDTO.getAddressRequestDTO());
+
+        newPatient.setAddress(newAddress);
+        newAddress.setPatient(newPatient);
+
+        Patient savedPatient = patientRepository.save(newPatient);
 
         billingServiceGrpcClient.createBillingAccount(
                 newPatient.getId().toString(),
@@ -48,7 +55,7 @@ public class PatientServiceImpl implements PatientService {
 
         kafkaProducer.sendEvent(newPatient);
 
-        return patientMapper.toPatientResponseDTO(newPatient);
+        return patientMapper.toPatientResponseDTO(savedPatient);
     }
 
     @Override

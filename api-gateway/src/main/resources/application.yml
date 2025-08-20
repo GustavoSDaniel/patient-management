@@ -12,9 +12,9 @@ spring:
               predicates:
                 - Path=/api/v1/patients/**
               filters:
-                - StripPrefix=0   # mantém /api/v1/patients/**
+                - StripPrefix=0   # mantï¿½m /api/v1/patients/**
 
-              # Rota para documentação Swagger/OpenAPI
+              # Rota para documentaï¿½ï¿½o Swagger/OpenAPI
             - id: api-docs-patient-route
               uri: http://localhost:8080
               predicates:
