@@ -1,0 +1,26 @@
+server:
+  port: 8098
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: patient-service-route
+              uri: http://localhost:8080
+              predicates:
+                - Path=/api/v1/patients/**
+              filters:
+                - StripPrefix=0   # mantém /api/v1/patients/**
+
+              # Rota para documentação Swagger/OpenAPI
+            - id: api-docs-patient-route
+              uri: http://localhost:8080
+              predicates:
+                - Path=/api-docs/patients
+              filters:
+                - RewritePath=/api-docs/patients, /v3/api-docs
+
+
+

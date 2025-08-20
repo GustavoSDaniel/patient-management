@@ -1,0 +1,15 @@
+server:
+  port: 8098
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: patient-service-route
+              uri: http://patient-service:8080
+              predicates:
+                - Path=/api/patients/**
+              filters:
+                - StripPrefix=1
