@@ -33,7 +33,7 @@ spring:
   grpc:
     client:
       billing-service:
-        address: static://${BILLING_SERVICE_HOST:localhost}:${BILLING_SERVICE_PORT:9092}
+        address: static://${BILLING_SERVICE_HOST:localhost}:${BILLING_SERVICE_PORT:9093}
         negotiationType: PLAINTEXT
 
   # Configuração do Kafka para o ambiente local
@@ -46,5 +46,12 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
 
+# http://localhost:8080/swagger-ui.html
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+
 server:
   port: 8080
+

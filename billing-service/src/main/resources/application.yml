@@ -10,4 +10,4 @@ server:
 
 grpc:
   server:
-    port: 9092  # Porta gRPC
+    port: 9093  # Porta gRPC
