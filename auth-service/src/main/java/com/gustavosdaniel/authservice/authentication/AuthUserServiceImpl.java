@@ -3,6 +3,7 @@ package com.gustavosdaniel.authservice.authentication;
 import com.gustavosdaniel.authservice.commun.JwtUtil;
 import com.gustavosdaniel.authservice.user.LoginRequestDTO;
 import com.gustavosdaniel.authservice.user.UserService;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,18 @@ public class AuthUserServiceImpl implements AuthUserService {
                 .map(user -> jwtUtil.generateToken(user.getEmail(), user.getRole()));
 
         return token;
+    }
+
+    @Override
+    public boolean validateToken(String token) {
+
+        try {
+
+            jwtUtil.validateToken(token);
+            return true;
+
+        }catch (JwtException e){
+            return false;
+        }
     }
 }

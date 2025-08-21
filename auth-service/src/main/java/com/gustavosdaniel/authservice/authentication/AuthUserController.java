@@ -7,15 +7,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthUserController {
 
@@ -36,5 +33,19 @@ public class AuthUserController {
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
 
+    }
+
+    @Operation(summary = "Validate Token")
+    @GetMapping(path = "/validate")
+    public ResponseEntity<Void> validateToken(
+            @RequestHeader("Authorization") String authorizationHeader
+    ){
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        return authUserService.validateToken(authorizationHeader.substring(7))
+                ? ResponseEntity.ok().build()  // validateToken retornar true, o endpoint responde com 200 OK
+                : ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // retornar false, ele responde com 401 Unauthorized.
     }
 }
