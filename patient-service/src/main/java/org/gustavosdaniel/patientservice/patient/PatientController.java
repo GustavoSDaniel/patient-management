@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +34,12 @@ public class PatientController {
 
     @GetMapping
     @Operation(summary = "Get All Patients")
-    public ResponseEntity<Page<PatientResponseDTO>> getAllPatients(Pageable pageable) {
+    public ResponseEntity<Page<PatientResponseDTO>> getAllPatients(
+            Pageable pageable,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int size) {
 
-        Page<PatientResponseDTO> patients = patientService.getPatients(pageable);
+        Page<PatientResponseDTO> patients = patientService.getPatients(pageable, PageRequest.of(page -1, size));
 
         return ResponseEntity.ok(patients);
 
