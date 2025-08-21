@@ -27,14 +27,6 @@ services:
     profiles:
       - dev
 
-  billing-service:
-    build: ./billing-service
-    container_name: billing-service
-    ports:
-      - "8082:8081"
-      - "9092:9091"
-    networks:
-      - patient-network
 
   zookeeper:
     image: docker.io/bitnami/zookeeper:3.9
@@ -73,36 +65,6 @@ services:
       # Define o listener para comunicação interna entre os brokers
       KAFKA_CFG_INTER_BROKER_LISTENER_NAME: INTERNAL
 
-    networks:
-      - patient-network
-
-  patient-service:
-    build: ./patient-service
-    container_name: patient-service
-    ports:
-      - "8085:8080"
-      - "9095:9090"
-    depends_on:
-      - patient-db
-      - billing-service
-      - kafka
-    environment:
-      # O Spring lerá o 'application-docker.yml'
-      SPRING_PROFILES_ACTIVE: docker
-    networks:
-      - patient-network
-
-  analytics-service:
-    build:
-      context: .
-      dockerfile: analytics-service/Dockerfile
-    container_name: analytics-service
-    ports:
-      - "8091:8091"
-    depends_on:
-      - kafka
-    environment:
-      SPRING_PROFILES_ACTIVE: docker
     networks:
       - patient-network
 

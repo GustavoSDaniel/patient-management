@@ -1,11 +1,14 @@
 package org.gustavosdaniel.patientservice.patient;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.UUID;
 
 public interface PatientService {
 
-    List<PatientResponseDTO> getPatients();
+    Page<PatientResponseDTO> getPatients(Pageable pageable);
 
     PatientResponseDTO createPatient(RequestPatientDTO requestPatientDTO);
 

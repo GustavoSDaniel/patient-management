@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +33,9 @@ public class PatientController {
 
     @GetMapping
     @Operation(summary = "Get All Patients")
-    public ResponseEntity<List<PatientResponseDTO>> getAllPatients() {
+    public ResponseEntity<Page<PatientResponseDTO>> getAllPatients(Pageable pageable) {
 
-        List<PatientResponseDTO> patients = patientService.getPatients();
+        Page<PatientResponseDTO> patients = patientService.getPatients(pageable);
 
         return ResponseEntity.ok(patients);
 

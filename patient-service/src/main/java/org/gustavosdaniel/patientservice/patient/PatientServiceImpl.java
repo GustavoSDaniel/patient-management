@@ -5,6 +5,8 @@ import org.gustavosdaniel.patientservice.address.Address;
 import org.gustavosdaniel.patientservice.address.AddressMapper;
 import org.gustavosdaniel.patientservice.grpc.BillingServiceGrpcClient;
 import org.gustavosdaniel.patientservice.kafka.KafkaProducer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,12 +25,12 @@ public class PatientServiceImpl implements PatientService {
 
 
     @Override
-    public List<PatientResponseDTO> getPatients() {
+    public Page<PatientResponseDTO> getPatients(Pageable pageable) {
 
-        List<Patient> patients = patientRepository.findAll();
+        Page<Patient> patients = patientRepository.findAll(pageable);
 
-        return patients.stream()
-                .map(patientMapper::toPatientResponseDTO).collect(Collectors.toList());
+        return patients
+                .map(patientMapper::toPatientResponseDTO);
 
     }
 
