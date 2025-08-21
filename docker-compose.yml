@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  db:
+  patient-db:
     image: postgres:16-alpine
     container_name: patient-db
     ports:
@@ -12,7 +12,7 @@ services:
       POSTGRES_PASSWORD: senha_dev
       POSTGRES_DB: patient_db
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - patient_db_data:/var/lib/postgresql/data
     networks:
       - patient-network
 
@@ -83,9 +83,9 @@ services:
       - "8085:8080"
       - "9095:9090"
     depends_on:
-      - db
+      - patient-db
       - billing-service
-      - kafka  # Adicionado o Kafka aqui
+      - kafka
     environment:
       # O Spring lerá o 'application-docker.yml'
       SPRING_PROFILES_ACTIVE: docker
@@ -106,8 +106,25 @@ services:
     networks:
       - patient-network
 
+
+  auth-db:
+    image: postgres:16-alpine
+    container_name: auth-service-db
+    ports:
+      - "5436:5432"
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: usuario_dev
+      POSTGRES_PASSWORD: senha_dev
+      POSTGRES_DB: auth_service_db
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+    networks:
+      - patient-network
+
 volumes:
-  db_data:
+  auth_db_data:
+  patient_db_data:
 
 networks:
   patient-network:

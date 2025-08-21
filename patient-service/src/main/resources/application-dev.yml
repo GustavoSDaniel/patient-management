@@ -33,7 +33,7 @@ spring:
   grpc:
     client:
       billing-service:
-        address: static://${BILLING_SERVICE_HOST:localhost}:${BILLING_SERVICE_PORT:9093}
+        address: static://${BILLING_SERVICE_HOST:localhost}:${BILLING_SERVICE_PORT:9092}
         negotiationType: PLAINTEXT
 
   # Configuração do Kafka para o ambiente local

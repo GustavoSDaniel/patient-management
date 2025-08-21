@@ -14,7 +14,7 @@ spring:
               filters:
                 - StripPrefix=0   # mant�m /api/v1/patients/**
 
-              # Rota para documenta��o Swagger/OpenAPI
+              # Rota para documenta��o Swagger/OpenAPI http://localhost:8098/api-docs/patients
             - id: api-docs-patient-route
               uri: http://localhost:8080
               predicates:

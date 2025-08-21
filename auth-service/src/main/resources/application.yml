@@ -1,0 +1,33 @@
+spring:
+  application:
+    name:
+      auth-service
+
+  # Configuração do banco de dados para o ambiente Docker
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:auth-db}:${DB_PORT:5432}/${DB_NAME:auth-service-db}
+    username: ${DB_USERNAME:usuario_dev}
+    password: ${DB_PASSWORD:senha_dev}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      leak-detection-threshold: 60000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  sql:
+    init:
+      mode: embedded
+
+server:
+  port: 9002
