@@ -32,5 +32,10 @@ spring:
 jwt:
   secret: 'wJk/dG8xH+aVbNpL6fRzV2yZ4sA7eFjQ5gU9hC3iKlE='
 
+# http://localhost:9002/swagger-ui.html
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
 server:
   port: 9002

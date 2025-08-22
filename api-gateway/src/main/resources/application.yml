@@ -20,7 +20,7 @@ spring:
               predicates:
                 - Path=/api/v1/patients/**
               filters:
-                - StripPrefix=0   # mant�m /api/v1/patients/**
+                - StripPrefix=0
                 - JwtValidation
 
               # Rota para documenta��o Swagger/OpenAPI http://localhost:8098/api-docs/patients
@@ -30,6 +30,16 @@ spring:
                 - Path=/api-docs/patients
               filters:
                 - RewritePath=/api-docs/patients, /v3/api-docs
+
+
+              # Rota para documenta��o Swagger/OpenAPI http://localhost:8098/api-docs/auth
+            - id: api-docs-auth-route
+              uri: http://localhost:9002
+              predicates:
+                - Path=/api-docs/auth
+              filters:
+                - RewritePath=/api-docs/auth, /v3/api-docs
+
 
 # acessa o auth-service
 auth:
