@@ -21,6 +21,7 @@ spring:
                 - Path=/api/v1/patients/**
               filters:
                 - StripPrefix=0   # mant�m /api/v1/patients/**
+                - JwtValidation
 
               # Rota para documenta��o Swagger/OpenAPI http://localhost:8098/api-docs/patients
             - id: api-docs-patient-route
@@ -29,6 +30,15 @@ spring:
                 - Path=/api-docs/patients
               filters:
                 - RewritePath=/api-docs/patients, /v3/api-docs
+
+# acessa o auth-service
+auth:
+  service:
+    url: http://localhost:9002
+
+
+
+
 
 
 
