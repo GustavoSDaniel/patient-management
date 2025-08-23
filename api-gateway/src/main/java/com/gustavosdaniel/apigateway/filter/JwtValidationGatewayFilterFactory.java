@@ -40,7 +40,7 @@ public class JwtValidationGatewayFilterFactory extends AbstractGatewayFilterFact
 
             // 3. Envia o token para o serviço de autenticação para validação
             return webClient.get()
-                    .uri("/validate") // Endpoint de validação no serviço de autenticação
+                    .uri("/api/v1/auth/validate") // Endpoint de validação no serviço de autenticação
                     .header(HttpHeaders.AUTHORIZATION, token) // Envia o mesmo cabeçalho
                     .retrieve() // Executa a chamada
                     .toBodilessEntity() // Espera uma resposta (o corpo não importa, apenas o status de sucesso)
