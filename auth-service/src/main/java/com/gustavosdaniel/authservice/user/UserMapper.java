@@ -13,6 +13,7 @@ public class UserMapper {
         }
 
         return CreateUserResponseDTO.builder()
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -24,6 +25,7 @@ public class UserMapper {
         }
 
         return User.builder()
+                .username(createUserRequestDTO.getUsername())
                 .email(createUserRequestDTO.getEmail())
                 .password(createUserRequestDTO.getPassword())
                 .build();

@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService{
         newUser.setRole(UserRole.USER);
 
         User userSalved = userRepository.save(newUser);
+
         log.info("User created successfully with email: {}", userSalved.getEmail());
 
         return userMapper.toCreateUserResponseDTO(userSalved);

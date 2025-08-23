@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreateUserRequestDTO {
 
+    @NotBlank(message = "Campo Usuario é obrigatório")
+    private String username;
+
     @NotBlank(message = "Campo email é obrigatório")
     @Email(message = "Formato de email invalido")
     private String email;

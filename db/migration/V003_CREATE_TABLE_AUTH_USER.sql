@@ -18,3 +18,6 @@ VALUES (
            CURRENT_TIMESTAMP,
            CURRENT_TIMESTAMP
        );
+
+
+ALTER TABLE users ADD COLUMN username VARCHAR(255) NOT NULL DEFAULT 'nome_padrao';

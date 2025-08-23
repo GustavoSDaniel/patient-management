@@ -27,7 +27,9 @@ public class PatientController {
     public ResponseEntity<PatientResponseDTO> createPatient(
             @Valid @RequestBody RequestPatientDTO requestPatientDTO
     ) {
+
         PatientResponseDTO patientResponseDTO = patientService.createPatient(requestPatientDTO);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(patientResponseDTO);
 
     }
