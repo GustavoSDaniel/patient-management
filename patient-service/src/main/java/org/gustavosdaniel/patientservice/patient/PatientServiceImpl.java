@@ -24,7 +24,7 @@ public class PatientServiceImpl implements PatientService {
 
 
     @Override
-    public Page<PatientResponseDTO> getPatients(Pageable pageable, PageRequest pageRequest) {
+    public Page<PatientResponseDTO> getPatients(Pageable pageable) {
 
         Page<Patient> patients = patientRepository.findAll(pageable);
 

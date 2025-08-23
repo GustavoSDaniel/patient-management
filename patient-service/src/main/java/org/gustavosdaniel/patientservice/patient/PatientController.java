@@ -37,11 +37,12 @@ public class PatientController {
     @GetMapping
     @Operation(summary = "Get All Patients")
     public ResponseEntity<Page<PatientResponseDTO>> getAllPatients(
-            Pageable pageable,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size) {
 
-        Page<PatientResponseDTO> patients = patientService.getPatients(pageable, PageRequest.of(page -1, size));
+        Pageable pageable = PageRequest.of(page -1, size);
+
+        Page<PatientResponseDTO> patients = patientService.getPatients(pageable);
 
         return ResponseEntity.ok(patients);
 

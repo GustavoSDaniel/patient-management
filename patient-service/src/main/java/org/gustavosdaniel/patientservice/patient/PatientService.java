@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface PatientService {
 
-    Page<PatientResponseDTO> getPatients(Pageable pageable, PageRequest pageRequest);
+    Page<PatientResponseDTO> getPatients(Pageable pageable);
 
     PatientResponseDTO createPatient(RequestPatientDTO requestPatientDTO);
 

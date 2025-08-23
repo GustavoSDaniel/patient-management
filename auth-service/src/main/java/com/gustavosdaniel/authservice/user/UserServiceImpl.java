@@ -3,8 +3,9 @@ package com.gustavosdaniel.authservice.user;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.apache.bcel.Constants;
-import org.aspectj.apache.bcel.classfile.Constant;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,12 @@ public class UserServiceImpl implements UserService{
 
         return userMapper.toCreateUserResponseDTO(userSalved);
 
+    }
+
+    @Override
+    public Page<User> getUsers(Pageable pageable) {
+
+        return userRepository.findAll(pageable);
     }
 
     @Override
