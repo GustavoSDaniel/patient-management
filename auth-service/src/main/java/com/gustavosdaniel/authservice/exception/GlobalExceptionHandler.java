@@ -1,6 +1,7 @@
 package com.gustavosdaniel.authservice.exception;
 
 import com.gustavosdaniel.authservice.commun.FusoHorarioBr;
+import com.gustavosdaniel.authservice.user.EmailAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,22 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDTO);
+
+
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorDTO> handleEmailAlreadyExistsException(EmailAlreadyExistsException exception) {
+
+        log.error("Caught EmailAlreadyExistsException", exception);
+
+        ErrorDTO errorDTO = ErrorDTO.builder()
+                .error("Bad Request")
+                .message("Email já em uso.")
+                .timestamp(FusoHorarioBr.nowInBrasil().toLocalDateTime())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDTO);
 
 
     }

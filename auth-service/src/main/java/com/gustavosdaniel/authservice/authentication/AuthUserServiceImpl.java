@@ -25,7 +25,7 @@ public class AuthUserServiceImpl implements AuthUserService {
                 .findByEmail(loginRequestDTO.getEmail())
                 .filter(user -> passwordEncoder.matches(loginRequestDTO.getPassword(),
                         user.getPassword()))
-                .map(user -> jwtUtil.generateToken(user.getEmail(), user.getRole()));
+                .map(user -> jwtUtil.generateToken(user.getEmail(), user.getRole().name())); // name faz o retorno do enum ser uma string
 
         return token;
     }
