@@ -41,6 +41,15 @@ spring:
                 - RewritePath=/api-docs/auth, /v3/api-docs
 
 
+              # Rota para documenta��o Swagger/OpenAPI http://localhost:8098/api-docs/users
+            - id: api-docs-users-route
+              uri: http://localhost:9002
+              predicates:
+               - Path=/api-docs/users
+              filters:
+                 - RewritePath=/api-docs/users, /v3/api-docs
+
+
 # acessa o auth-service
 auth:
   service:

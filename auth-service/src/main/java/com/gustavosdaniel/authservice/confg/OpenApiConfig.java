@@ -12,8 +12,8 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Patient Service Auth")
+                        .title("Patient Service Auth and User Service")
                         .version("1.0.0")
-                        .description("Patient Service API Authentication"));
+                        .description("Patient Service API Authentication and Users"));
     }
 }
