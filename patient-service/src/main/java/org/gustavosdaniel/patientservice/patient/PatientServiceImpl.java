@@ -16,11 +16,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PatientServiceImpl implements PatientService {
 
-    private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
     private final AddressMapper addressMapper;
     private final BillingServiceGrpcClient billingServiceGrpcClient;
     private final KafkaProducer kafkaProducer;
+    private final PatientRepository patientRepository;
 
 
     @Override
@@ -58,6 +58,16 @@ public class PatientServiceImpl implements PatientService {
 
         return patientMapper.toPatientResponseDTO(savedPatient);
     }
+
+    @Override
+    public Page<PatientResponseDTO> searchUsersByPatients(String name,Pageable pageable) {
+
+        Page<Patient> patients = patientRepository.searchUsersByPatients(name, pageable);
+
+        return patients
+                .map(patientMapper::toPatientResponseDTO);
+    }
+
 
     @Override
     public PatientUpdateResponseDTO updatePatient(UUID id, PatientUpdateRequestDTO patientUpdateRequestDTO) {

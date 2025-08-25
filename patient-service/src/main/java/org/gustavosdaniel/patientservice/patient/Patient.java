@@ -5,6 +5,7 @@ import lombok.*;
 import org.gustavosdaniel.patientservice.address.Address;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @Entity
 @Builder
 @Table(name = "patients")
+@EntityListeners(AuditingEntityListener.class)
 public class Patient {
 
     @Id

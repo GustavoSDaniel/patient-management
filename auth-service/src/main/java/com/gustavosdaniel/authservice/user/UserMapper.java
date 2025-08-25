@@ -13,6 +13,7 @@ public class UserMapper {
         }
 
         return CreateUserResponseDTO.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .createdAt(LocalDateTime.now())
@@ -30,4 +31,20 @@ public class UserMapper {
                 .password(createUserRequestDTO.getPassword())
                 .build();
     }
+
+    public UpdateUserResponseDTO toUpdateUserResponseDTO(User user) {
+        if (user == null) {
+            return null;
+        }
+
+        return UpdateUserResponseDTO.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(LocalDateTime.now())
+                .build();
+    }
+
+
 }

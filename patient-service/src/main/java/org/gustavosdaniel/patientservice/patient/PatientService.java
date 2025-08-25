@@ -12,6 +12,8 @@ public interface PatientService {
 
     PatientResponseDTO createPatient(RequestPatientDTO requestPatientDTO);
 
+    Page<PatientResponseDTO> searchUsersByPatients(String name, Pageable pageable);
+
     PatientUpdateResponseDTO updatePatient(UUID id, PatientUpdateRequestDTO patientUpdateRequestDTO);
 
     void deletePatient(UUID id);

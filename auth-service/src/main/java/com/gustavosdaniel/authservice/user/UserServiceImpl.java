@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -52,9 +53,63 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public Page<CreateUserResponseDTO> searchUsersByName(Pageable pageable, String username) {
+
+        Page<User> user = userRepository.findByName(username, pageable);
+
+        return user.map(userMapper::toCreateUserResponseDTO);
+
+    }
+
+
+    @Override
     public Optional<User> findByEmail(String email) {
 
         return userRepository.findByEmail(email);
 
     }
+
+    @Transactional
+    @Override
+    public UpdateUserResponseDTO updateUser(UUID id, UpdateUserRequestDTO updateUserRequestDTO) {
+
+        User updatedUser = userRepository.findById(id).orElseThrow(UsernameNotFoundException::new);
+
+        if (userRepository.existsByEmailAndIdNot(updateUserRequestDTO.getEmail(), id)) {
+            log.warn("Attempt to use existing email: {}", updateUserRequestDTO.getEmail());
+            throw new EmailAlreadyExistsException();
+        }
+
+        // 3. Atualiza apenas os campos que não são nulos no DTO
+        if (updateUserRequestDTO.getUsername() != null) {
+
+            updatedUser.setUsername(updateUserRequestDTO.getUsername());
+        }
+
+        if (updateUserRequestDTO.getEmail() != null) {
+
+            updatedUser.setEmail(updateUserRequestDTO.getEmail());
+        }
+
+        if (updateUserRequestDTO.getPassword() != null
+                && !updateUserRequestDTO.getPassword().isBlank()) { // isblank verifica se uma string está vazia ou contém apenas espaços em branco.
+
+            updatedUser.setPassword(passwordEncoder.encode(updateUserRequestDTO.getPassword()));
+        }
+
+        User savedUser = userRepository.save(updatedUser);
+
+        return userMapper.toUpdateUserResponseDTO(savedUser);
+    }
+
+    @Override
+    public void deleteUser(UUID id) {
+
+        User user = userRepository.findById(id).orElseThrow(UsernameNotFoundException::new);
+
+        userRepository.delete(user);
+    }
 }
+
+
+
