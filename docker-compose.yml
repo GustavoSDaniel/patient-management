@@ -84,9 +84,28 @@ services:
     networks:
       - patient-network
 
+
+  # Simula a AWS
+  localstack:
+    container_name: "localstack-main"
+    image: localstack/localstack:latest
+    ports:
+      # A porta "Edge" que direciona para todos os serviços
+      - "127.0.0.1:4566:4566"
+    environment:
+      - DEBUG=0
+    volumes:
+      # Volume para persistir os dados entre as reinicializações do contêiner
+      - "localstack_data:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - patient-network
+
+
 volumes:
   auth_db_data:
   patient_db_data:
+  localstack_data:
 
 networks:
   patient-network:

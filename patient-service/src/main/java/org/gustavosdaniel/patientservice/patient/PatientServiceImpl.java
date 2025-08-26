@@ -6,7 +6,6 @@ import org.gustavosdaniel.patientservice.address.AddressMapper;
 import org.gustavosdaniel.patientservice.grpc.BillingServiceGrpcClient;
 import org.gustavosdaniel.patientservice.kafka.KafkaProducer;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
