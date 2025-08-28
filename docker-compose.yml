@@ -101,6 +101,38 @@ services:
     networks:
       - patient-network
 
+  # ASERVIÇOS
+  patient-service:
+    build: ./patient-service
+    container_name: patient-service
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - patient-network
+    depends_on:
+      - patient-db # Garante que o banco de dados inicie antes da sua aplicação
+      - kafka      # Garante que o Kafka inicie antes
+    environment:
+
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://patient-db:5432/patient_db
+      - SPRING_DATASOURCE_USERNAME=usuario_dev
+      - SPRING_DATASOURCE_PASSWORD=senha_dev
+      # Usa o nome do serviço 'kafka' como host e a porta INTERNA do listener (9092)
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+
+  billing-service:
+    build:
+      context: ./billing-service   # Caminho para a pasta do serviço
+      dockerfile: Dockerfile
+    container_name: billing-service
+    restart: unless-stopped
+    ports:
+      - "8081:8081"  # Porta HTTP (server.port)
+      - "9092:9092"  # Porta gRPC (grpc.server.port)
+      - "6565:6565"  # Porta RSocket (spring.rsocket.server.port)
+    networks:
+      - patient-network
 
 volumes:
   auth_db_data:
