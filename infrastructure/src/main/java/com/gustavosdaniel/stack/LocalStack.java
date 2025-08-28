@@ -1,13 +1,19 @@
 package com.gustavosdaniel.stack;
 
-import software.amazon.awscdk.services.ecs.CloudMapNamespaceOptions;
-import software.amazon.awscdk.services.ecs.Cluster;
+import software.amazon.awscdk.services.ecs.*;
 import software.amazon.awscdk.services.ec2.*;
 import software.amazon.awscdk.*;
 import software.amazon.awscdk.services.ec2.InstanceType;
+import software.amazon.awscdk.services.ecs.Protocol;
+import software.amazon.awscdk.services.logs.LogGroup;
+import software.amazon.awscdk.services.logs.RetentionDays;
 import software.amazon.awscdk.services.msk.CfnCluster;
 import software.amazon.awscdk.services.rds.*;
 import software.amazon.awscdk.services.route53.CfnHealthCheck;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LocalStack extends Stack {
@@ -31,6 +37,9 @@ public class LocalStack extends Stack {
         CfnCluster mksCluster = createMskCluster();
 
         this.ecsCluster = createEcsCluster();
+
+        FargateService authService =
+                createFargateService("AuthService", "auth-service", "patient-service")
     }
 
     private Vpc createVpc() {
@@ -93,6 +102,67 @@ public class LocalStack extends Stack {
                         .name("patient-management-local")
                         .build())
                 .build();
+    }
+
+    private FargateService createFargateService(
+            String id,
+            String imageName,
+            List<Integer> ports,
+            DatabaseInstance db,
+            Map<String, String> additionalEnvVars) {
+
+        FargateTaskDefinition taskDefinition = FargateTaskDefinition.Builder.create(this, id + "task")
+                .cpu(256)
+                .memoryLimitMiB(512)
+                .build();
+
+        ContainerDefinitionOptions.Builder containerOptions = ContainerDefinitionOptions.builder()
+                .image(ContainerImage.fromRegistry(imageName))
+                .portMappings(ports.stream()
+                        .map(port -> PortMapping.builder()
+                                .containerPort(port)
+                                .hostPort(port)
+                                .protocol(Protocol.TCP)
+                                .build())
+                        .toList())
+                .logging(LogDriver.awsLogs(AwsLogDriverProps.builder()
+                                .logGroup(LogGroup.Builder.create(this, id + "LogGroup")
+                                        .logGroupName("/ecs/" + imageName)
+                                        .removalPolicy(RemovalPolicy.DESTROY)
+                                        .retention(RetentionDays.ONE_DAY)
+                                        .build())
+                                .build()));
+
+
+        Map<String, String> envVars = new HashMap<>();
+        envVars.put("SPRING_KAFKA_BOOTSTRAP_SERVERS",
+                "localhost.localstack.cloud:4510, localhost.localstack.cloud:4511, localhost.localstack.cloud:4512");
+
+        if(additionalEnvVars != null) {
+            envVars.putAll(additionalEnvVars);
+        }
+
+        if(db != null) {
+            envVars.put("SPRING_DATASOURCE_URL", "jdbc:postgresql://%s:%s/%s-db".formatted(
+                    db.getDbInstanceEndpointAddress(), db.getDbInstanceEndpointPort(), imageName
+            ));
+            envVars.put("SPRING_DATASOURCE_USERNAME", "adm_user");
+            envVars.put("SPRING_DATASOURCE_PASSWORD", db.getSecret().secretValueFromJson("password").toString());
+            envVars.put("SPRING_JPA_HIBERNATE_DDL_AUTO", "update");
+            envVars.put("SPRING_SQL_INT_MODE", "always");
+            envVars.put("SPRING_DATASOURCE_HIKARI_INITIALIZATION_FAIL_TIMEOUT", "60000");
+        }
+
+        containerOptions.environment(envVars);
+        taskDefinition.addContainer(imageName + "Container", containerOptions.build());
+
+        return FargateService.Builder.create(this, id)
+                .cluster(ecsCluster)
+                .taskDefinition(taskDefinition)
+                .assignPublicIp(false)
+                .serviceName(imageName)
+                .build();
+
     }
 
     public static void main(String[] args) {
