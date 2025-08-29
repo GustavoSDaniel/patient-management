@@ -16,18 +16,6 @@ services:
     networks:
       - patient-network
 
-  adminer:
-    image: adminer:4.8.1
-    container_name: patient-adminer
-    restart: unless-stopped
-    ports:
-      - "8090:8080"
-    networks:
-      - patient-network
-    profiles:
-      - dev
-
-
   zookeeper:
     image: docker.io/bitnami/zookeeper:3.9
     container_name: zookeeper
@@ -129,6 +117,8 @@ services:
       - "6565:6565"  # Porta RSocket (spring.rsocket.server.port)
     networks:
       - patient-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
 
   analytics-service:
     build:
@@ -147,6 +137,7 @@ services:
     environment:
       # Define o endereço do Kafka para a comunicação interna entre containers
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_PROFILES_ACTIVE=docker
 
   api-gateway:
     build:
@@ -190,6 +181,7 @@ services:
       # As credenciais podem ser mantidas, pois são as mesmas definidas no serviço auth-db
       - SPRING_DATASOURCE_USERNAME=usuario_dev
       - SPRING_DATASOURCE_PASSWORD=senha_dev
+      - SPRING_PROFILES_ACTIVE=docker
 
 volumes:
   auth_db_data:

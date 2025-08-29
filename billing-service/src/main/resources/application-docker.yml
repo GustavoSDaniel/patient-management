@@ -1,0 +1,14 @@
+server:
+  port: 8081 # Porta HTTP
+
+# Configura as portas para os servidores gRPC e RSocket
+grpc:
+  server:
+    port: 9092
+
+spring:
+  rsocket:
+    server:
+      port: 6565
+  kafka:
+    bootstrap-servers: kafka:9092 # Conecta ao Kafka
