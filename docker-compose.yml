@@ -115,12 +115,7 @@ services:
       - patient-db # Garante que o banco de dados inicie antes da sua aplicação
       - kafka      # Garante que o Kafka inicie antes
     environment:
-      # Sobrescreve as configurações do seu application.yml
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://patient-db:5432/patient_db
-      - SPRING_DATASOURCE_USERNAME=usuario_dev
-      - SPRING_DATASOURCE_PASSWORD=senha_dev
-      # Usa o nome do serviço 'kafka' como host e a porta INTERNA do listener (9092)
-      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - SPRING_PROFILES_ACTIVE=docker
 
   billing-service:
     build:
@@ -168,15 +163,10 @@ services:
       - auth-service
       - patient-service
     environment:
-      # --- A MÁGICA ACONTECE AQUI ---
+      - SPRING_PROFILES_ACTIVE=docker
       # Sobrescreve as URIs do application.yml com os nomes dos serviços do Docker
-      - SPRING_CLOUD_GATEWAY_ROUTES_0_URI=http://auth-service:9002
-      - SPRING_CLOUD_GATEWAY_ROUTES_1_URI=http://auth-service:9002
-      - SPRING_CLOUD_GATEWAY_ROUTES_2_URI=http://patient-service:8080
-      - SPRING_CLOUD_GATEWAY_ROUTES_3_URI=http://patient-service:8080
-      - SPRING_CLOUD_GATEWAY_ROUTES_4_URI=http://auth-service:9002
-      - SPRING_CLOUD_GATEWAY_ROUTES_5_URI=http://auth-service:9002
       - AUTH_SERVICE_URL=http://auth-service:9002
+
 
   auth-service:
     build:

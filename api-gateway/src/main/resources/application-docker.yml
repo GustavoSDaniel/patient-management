@@ -1,0 +1,62 @@
+server:
+  port: 8098
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            # Rota para o serviço de autenticação
+            - id: auth-service-route
+              uri: http://auth-service:9002
+              predicates:
+                - Path=/api/v1/auth/**
+              filters:
+                - StripPrefix=0
+
+            # Rota para o serviço de usuários (que está no auth-service)
+            - id: user-service-route
+              uri: http://auth-service:9002
+              predicates:
+                - Path=/api/v1/users/**
+              filters:
+                - StripPrefix=0
+
+            # Rota para o serviço de pacientes
+            - id: patient-service-route
+              uri: http://patient-service:8080
+              predicates:
+                - Path=/api/v1/patients/**
+              filters:
+                - StripPrefix=0
+                - JwtValidation
+
+            # Rota para a documentação do patient-service
+            - id: api-docs-patient-route
+              uri: http://patient-service:8080
+              predicates:
+                - Path=/api-docs/patients
+              filters:
+                - RewritePath=/api-docs/patients, /v3/api-docs
+
+            # Rota para a documentação do auth-service
+            - id: api-docs-auth-route
+              uri: http://auth-service:9002
+              predicates:
+                - Path=/api-docs/auth
+              filters:
+                - RewritePath=/api-docs/auth, /v3/api-docs
+
+            # Rota para a documentação de usuários (no auth-service)
+            - id: api-docs-users-route
+              uri: http://auth-service:9002
+              predicates:
+                - Path=/api-docs/users
+              filters:
+                - RewritePath=/api-docs/users, /v3/api-docs
+
+# Acessa o auth-service usando o nome do serviço Docker
+auth:
+  service:
+    url: http://auth-service:9002

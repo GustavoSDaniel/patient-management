@@ -1,28 +1,30 @@
-# Estágio 1: Builder - Constrói a aplicação
-FROM maven:3.9.9-eclipse-temurin-21 AS builder
+# Estágio 1: Build da aplicação com Maven
+FROM maven:3.9-eclipse-temurin-21 AS builder
 
+# Define o diretório de trabalho
 WORKDIR /app
 
+# Copia o pom.xml para baixar as dependências
 COPY pom.xml .
-
 RUN mvn dependency:go-offline -B
 
+# Copia o restante do código-fonte
 COPY src ./src
 
-# Gera o arquivo .jar
-RUN mvn clean package
+# Compila e empacota a aplicação
+RUN mvn clean package -DskipTests
 
-# -----------------------------------------------------------
-
-# Estágio 2: Runner - Executa a aplicação
-FROM openjdk:21-jdk AS runner
+# Estágio 2: Imagem final de execução
+FROM openjdk:21-jdk
 
 WORKDIR /app
 
-# Copia apenas o .jar gerado no estágio anterior
-COPY --from=builder /app/target/patient-service-0.0.1-SNAPSHOT.jar ./app.jar
+# Copia o JAR correto, gerado pelo build do billing-service
+COPY --from=builder /app/target/billing-service-0.0.1-SNAPSHOT.jar app.jar
 
-EXPOSE 8080
+# Expõe a porta do servidor gRPC e a porta HTTP
+EXPOSE 9092
+EXPOSE 8081
 
-# Define o comando para iniciar a aplicação
+# Comando para iniciar a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]
