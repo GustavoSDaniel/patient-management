@@ -101,7 +101,8 @@ services:
     networks:
       - patient-network
 
-  # ASERVIÇOS
+    # --- APLICAÇÕES ---
+
   patient-service:
     build: ./patient-service
     container_name: patient-service
@@ -114,7 +115,7 @@ services:
       - patient-db # Garante que o banco de dados inicie antes da sua aplicação
       - kafka      # Garante que o Kafka inicie antes
     environment:
-
+      # Sobrescreve as configurações do seu application.yml
       - SPRING_DATASOURCE_URL=jdbc:postgresql://patient-db:5432/patient_db
       - SPRING_DATASOURCE_USERNAME=usuario_dev
       - SPRING_DATASOURCE_PASSWORD=senha_dev
@@ -133,6 +134,72 @@ services:
       - "6565:6565"  # Porta RSocket (spring.rsocket.server.port)
     networks:
       - patient-network
+
+  analytics-service:
+    build:
+      # Caminho para a pasta que contém o Dockerfile do analytics-service
+      context: ./analytics-service
+      dockerfile: Dockerfile
+    container_name: analytics-service
+    restart: unless-stopped
+    ports:
+      - "8095:8095"
+    networks:
+      - patient-network
+    depends_on:
+      # Garante que o Kafka esteja de pé antes de iniciar este serviço
+      - kafka
+    environment:
+      # Define o endereço do Kafka para a comunicação interna entre containers
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+
+  api-gateway:
+    build:
+      context: ./api-gateway # Caminho para a pasta do Dockerfile do gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    restart: unless-stopped
+    ports:
+      - "8098:8098" # Porta principal do Gateway
+    networks:
+      - patient-network
+    depends_on:
+      # Garante que os serviços de destino iniciem antes do gateway
+      - auth-service
+      - patient-service
+    environment:
+      # --- A MÁGICA ACONTECE AQUI ---
+      # Sobrescreve as URIs do application.yml com os nomes dos serviços do Docker
+      - SPRING_CLOUD_GATEWAY_ROUTES_0_URI=http://auth-service:9002
+      - SPRING_CLOUD_GATEWAY_ROUTES_1_URI=http://auth-service:9002
+      - SPRING_CLOUD_GATEWAY_ROUTES_2_URI=http://patient-service:8080
+      - SPRING_CLOUD_GATEWAY_ROUTES_3_URI=http://patient-service:8080
+      - SPRING_CLOUD_GATEWAY_ROUTES_4_URI=http://auth-service:9002
+      - SPRING_CLOUD_GATEWAY_ROUTES_5_URI=http://auth-service:9002
+      - AUTH_SERVICE_URL=http://auth-service:9002
+
+  auth-service:
+    build:
+      # Caminho para a pasta que contém o Dockerfile do auth-service
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    restart: unless-stopped
+    ports:
+      # Mapeia a porta HTTP da aplicação
+      - "9002:9002"
+    networks:
+      # Conecta o serviço à rede compartilhada
+      - patient-network
+    depends_on:
+      # Garante que o banco de dados 'auth-db' esteja pronto antes
+      - auth-db
+    environment:
+      # Sobrescreve a URL do banco de dados para usar o nome do serviço do Docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-db:5432/auth_service_db
+      # As credenciais podem ser mantidas, pois são as mesmas definidas no serviço auth-db
+      - SPRING_DATASOURCE_USERNAME=usuario_dev
+      - SPRING_DATASOURCE_PASSWORD=senha_dev
 
 volumes:
   auth_db_data:

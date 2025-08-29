@@ -10,8 +10,7 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 
 # Gera o arquivo .jar
-RUN mvn clean package
-
+RUN mvn clean package -DskipTests
 # -----------------------------------------------------------
 
 # Estágio 2: Runner - Executa a aplicação
@@ -20,9 +19,9 @@ FROM openjdk:21-jdk AS runner
 WORKDIR /app
 
 # Copia apenas o .jar gerado no estágio anterior
-COPY --from=builder /app/target/analytics-service-0.0.1-SNAPSHOT.jar ./app.jar
+COPY --from=builder /app/target/auth-service-0.0.1-SNAPSHOT.jar ./app.jar
 
-EXPOSE 8095
+EXPOSE 9002
 
 # Define o comando para iniciar a aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]
