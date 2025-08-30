@@ -237,10 +237,15 @@ public class LocalStack extends Stack {
                         .memoryLimitMiB(512)
                         .build();
 
+        // application-prod.yml
+        Map<String, String> gatewayEnvVars = Map.of(
+                "SPRING_PROFILES_ACTIVE", "prod",
+                "AUTH_SERVICE_URL", "http://auth-service.patient-management-local:9002",
+                "PATIENT_SERVICE_URL", "http://patient-service.patient-management-local:8080");
+
         ContainerDefinitionOptions containerOptions = ContainerDefinitionOptions.builder()
                 .image(ContainerImage.fromRegistry("api-gateway"))
-                .environment(Map.of("SPRING_PROFILES_ACTIVE", "prod",
-                        "AUTH_SERVICE_URL", "http://host.docker.internal:9002")) // Corrigido http// para http://
+                .environment(gatewayEnvVars) // Usa o mapa de variáveis definido
                 .portMappings(List.of(8098).stream()
                         .map(port -> PortMapping.builder()
                                 .containerPort(port)

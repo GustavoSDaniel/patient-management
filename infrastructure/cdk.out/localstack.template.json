@@ -26,7 +26,7 @@
       }
      ]
     },
-    "CidrBlock": "10.0.0.0/18",
+    "CidrBlock": "10.0.0.0/24",
     "MapPublicIpOnLaunch": true,
     "Tags": [
      {
@@ -134,7 +134,7 @@
       }
      ]
     },
-    "CidrBlock": "10.0.64.0/18",
+    "CidrBlock": "10.0.1.0/24",
     "MapPublicIpOnLaunch": true,
     "Tags": [
      {
@@ -242,7 +242,7 @@
       }
      ]
     },
-    "CidrBlock": "10.0.128.0/18",
+    "CidrBlock": "10.0.2.0/24",
     "MapPublicIpOnLaunch": false,
     "Tags": [
      {
@@ -311,7 +311,7 @@
       }
      ]
     },
-    "CidrBlock": "10.0.192.0/18",
+    "CidrBlock": "10.0.3.0/24",
     "MapPublicIpOnLaunch": false,
     "Tags": [
      {
@@ -1634,12 +1634,16 @@
      {
       "Environment": [
        {
-        "Name": "AUTH_SERVICE_URL",
-        "Value": "http://host.docker.internal:9002"
-       },
-       {
         "Name": "SPRING_PROFILES_ACTIVE",
         "Value": "prod"
+       },
+       {
+        "Name": "AUTH_SERVICE_URL",
+        "Value": "http://auth-service.patient-management-local:9002"
+       },
+       {
+        "Name": "PATIENT_SERVICE_URL",
+        "Value": "http://patient-service.patient-management-local:8080"
        }
       ],
       "Essential": true,

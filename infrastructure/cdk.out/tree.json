@@ -53,7 +53,7 @@
                             }
                           ]
                         },
-                        "cidrBlock": "10.0.0.0/18",
+                        "cidrBlock": "10.0.0.0/24",
                         "mapPublicIpOnLaunch": true,
                         "tags": [
                           {
@@ -222,7 +222,7 @@
                             }
                           ]
                         },
-                        "cidrBlock": "10.0.64.0/18",
+                        "cidrBlock": "10.0.1.0/24",
                         "mapPublicIpOnLaunch": true,
                         "tags": [
                           {
@@ -391,7 +391,7 @@
                             }
                           ]
                         },
-                        "cidrBlock": "10.0.128.0/18",
+                        "cidrBlock": "10.0.2.0/24",
                         "mapPublicIpOnLaunch": false,
                         "tags": [
                           {
@@ -512,7 +512,7 @@
                             }
                           ]
                         },
-                        "cidrBlock": "10.0.192.0/18",
+                        "cidrBlock": "10.0.3.0/24",
                         "mapPublicIpOnLaunch": false,
                         "tags": [
                           {
@@ -2779,12 +2779,16 @@
                         },
                         "environment": [
                           {
-                            "name": "AUTH_SERVICE_URL",
-                            "value": "http://host.docker.internal:9002"
-                          },
-                          {
                             "name": "SPRING_PROFILES_ACTIVE",
                             "value": "prod"
+                          },
+                          {
+                            "name": "AUTH_SERVICE_URL",
+                            "value": "http://auth-service.patient-management-local:9002"
+                          },
+                          {
+                            "name": "PATIENT_SERVICE_URL",
+                            "value": "http://patient-service.patient-management-local:8080"
                           }
                         ]
                       }
